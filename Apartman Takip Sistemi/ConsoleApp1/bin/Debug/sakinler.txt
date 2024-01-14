@@ -1,0 +1,4 @@
+1,Emirhan,Gürsoy,1,5388223061,emirhangrsy@outlook.com,True
+2,Ahmet,Kemal,1,9519519595,emirhangrs02@outlook.com,True
+3,Mustafa,Fatih,7,9589589898,emirhangrys0214@outlook.com,True
+4,Mehmet,Kemal,7,9856541747,emirhangrsy0322@outlook.com,True
