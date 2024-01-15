@@ -43,7 +43,7 @@ namespace ApartmanTakipSistemi
                 string kullaniciAdi = Console.ReadLine();
 
                 Console.Write("Şifre: ");
-                string sifre = SifreGirisi();  // Şifre girişini bu fonksiyonla yapalım.
+                string sifre = SifreGirisi(); 
 
                 KullaniciRol kullaniciRol = GirisKontrol(kullaniciAdi, sifre);
 
@@ -71,7 +71,6 @@ namespace ApartmanTakipSistemi
             VerileriDosyayaKaydet();
         }
 
-        // Kullanıcının şifresini gizli bir şekilde girmesini sağlayan fonksiyon
         static string SifreGirisi()
         {
             string sifre = "";
@@ -81,7 +80,6 @@ namespace ApartmanTakipSistemi
             {
                 key = Console.ReadKey(true);
 
-                // Eğer kullanıcı backspace tuşuna basarsa, karakteri sifreden çıkar.
                 if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
                 {
                     sifre += key.KeyChar;
@@ -94,7 +92,7 @@ namespace ApartmanTakipSistemi
                 }
             } while (key.Key != ConsoleKey.Enter);
 
-            Console.WriteLine(); // Yeni satıra geçelim.
+            Console.WriteLine(); 
 
             return sifre;
         }
@@ -111,7 +109,7 @@ namespace ApartmanTakipSistemi
             }
             else
             {
-                return (KullaniciRol)(-1); // Geçersiz rol.
+                return (KullaniciRol)(-1);
             }
         }
 
@@ -194,7 +192,6 @@ namespace ApartmanTakipSistemi
             Console.Write("Soyad: ");
             sakin.Soyad = Console.ReadLine();
 
-            // Daire No için 1 ile 20 arasında sayı kontrolü
             bool validDaireNo = false;
             while (!validDaireNo)
             {
@@ -212,7 +209,6 @@ namespace ApartmanTakipSistemi
                 }
             }
 
-            // Telefon için sadece sayı ve 10 haneden fazla olmayan giriş kontrolü
             bool validTelefon = false;
             while (!validTelefon)
             {
@@ -230,7 +226,6 @@ namespace ApartmanTakipSistemi
                 }
             }
 
-            // E-posta adresi için basit bir doğrulama
             bool validEmail = false;
             while (!validEmail)
             {
@@ -256,14 +251,11 @@ namespace ApartmanTakipSistemi
             for (int i = 5; i > 0; i--)
             {
                 Console.Write($"\r{i} saniye sonra ana menüye dönülüyor...");
-                Thread.Sleep(1000); // 1 saniye bekleyin.
+                Thread.Sleep(1000);
             }
 
-            // Ekrandaki mesajı temizleyin.
             Console.Clear();
         }
-
-        // Basit e-posta adresi doğrulama fonksiyonu
         static bool IsValidEmail(string email)
         {
             try
@@ -279,17 +271,16 @@ namespace ApartmanTakipSistemi
 
         static string SonKullanımTarihiAl()
         {
-            while (true) // Doğru bir tarih girilene kadar döngüyü sürdür.
+            while (true) 
             {
                 Console.Write("Son Kullanım Tarihi (AA/YY formatında giriniz): ");
                 string tarih = Console.ReadLine();
 
-                // Basit bir doğrulama: İki rakamın yan yana gelmesi bekleniyor (Örn: 01/26).
                 if (tarih.Length == 5 && tarih[2] == '/' && int.TryParse(tarih.Substring(0, 2), out int ay) && int.TryParse(tarih.Substring(3), out int yil))
                 {
                     if (ay >= 1 && ay <= 12 && yil >= 0 && yil <= 99)
                     {
-                        return tarih; // Doğru format ve değer girildiğinde tarihi döndür.
+                        return tarih;
                     }
                 }
 
@@ -363,7 +354,6 @@ namespace ApartmanTakipSistemi
                         string icerik = "Aidat ödemeniz başarıyla gerçekleşti. Teşekkür ederiz.";
                         MailGonder(selectedSakin.eposta, konu, icerik);
 
-                        // Aidatın ödendiğini tüm dairedeki sakınlara uygula
                         foreach (var sakin in sakinler)
                         {
                             sakin.AidatOdendiMi = true;
@@ -392,28 +382,24 @@ namespace ApartmanTakipSistemi
 
         static void MailGonder(string eposta, string konu, string icerik)
         {
-            // SMTP sunucu bilgilerini ayarlayın (örnekte Gmail kullanıldı)
             string smtpServer = "smtp.gmail.com";
-            int smtpPort = 587; // Gmail için genellikle 587 portu kullanılır.
+            int smtpPort = 587; 
             string email = "apartmantakipsistemi@gmail.com";
-            string password = "shbh uxmb jkug kyxw"; // Gmail şifrenizi buraya yazın.
+            string password = "shbh uxmb jkug kyxw"; 
 
-            // E-posta bilgilerini oluşturun
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress(email);
-            mail.To.Add(eposta); // Alıcı e-posta adresi
-            mail.Subject = konu; // E-posta konusu
-            mail.Body = icerik; // E-posta içeriği
+            mail.To.Add(eposta); 
+            mail.Subject = konu; 
+            mail.Body = icerik; 
 
-            // SMTP istemcisini oluşturun ve ayarları yapın
             SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort);
-            smtpClient.EnableSsl = true; // SSL şifrelemesi aktif edilir (Gmail için gerekli)
+            smtpClient.EnableSsl = true; 
             smtpClient.UseDefaultCredentials = false;
             smtpClient.Credentials = new NetworkCredential(email, password);
 
             try
             {
-                // E-postayı gönderin
                 smtpClient.Send(mail);
                 Console.WriteLine("E-posta başarıyla gönderildi.");
             }
@@ -448,10 +434,8 @@ namespace ApartmanTakipSistemi
             for (int i = 5; i > 0; i--)
             {
                 Console.Write($"\r{i} saniye sonra ana menüye dönülüyor...");
-                Thread.Sleep(1000); // 1 saniye bekleyin.
+                Thread.Sleep(1000);
             }
-
-            // Ekrandaki mesajı temizleyin.
             Console.Clear();
         }
 
@@ -536,7 +520,7 @@ namespace ApartmanTakipSistemi
             if (devamEt.ToLower() == "evet")
             {
                 Console.Clear();
-                SakinGuncelle(); // Rekürsif olarak kendisini çağırarak bir sonraki güncellemeyi yapabilir.
+                SakinGuncelle(); 
             }
             else
             {
@@ -549,7 +533,6 @@ namespace ApartmanTakipSistemi
         {
             Console.WriteLine("Apartman Sakinleri:");
 
-            // Eğer apartmanSakinleri listesi boşsa, döngüye girmemek için kontrol ekleyelim.
             if (apartmanSakinleri.Count == 0)
             {
                 Console.WriteLine("Sistemde kayıtlı sakin bulunmamaktadır.");
@@ -558,7 +541,6 @@ namespace ApartmanTakipSistemi
 
             try
             {
-                // Daire numarasına göre sıralama ve sakinleri listeleme
                 var siraliSakinler = apartmanSakinleri.OrderBy(s => int.Parse(s.DaireNo)).ToList();
 
                 foreach (var sakin in apartmanSakinleri)
@@ -569,7 +551,6 @@ namespace ApartmanTakipSistemi
             }
             catch (Exception ex)
             {
-                // Eğer bir hata oluşursa, bu hatayı yakalayalım ve ekrana mesaj olarak gösterelim.
                 Console.WriteLine($"Bir hata oluştu: {ex.Message}");
             }
             Console.WriteLine("Lütfen Ana Menüye dönmek için bir tuşa basınız.");
@@ -579,10 +560,9 @@ namespace ApartmanTakipSistemi
             for (int i = 5; i > 0; i--)
             {
                 Console.Write($"\r{i} saniye sonra ana menüye dönülüyor...");
-                Thread.Sleep(1000); // 1 saniye bekleyin.
+                Thread.Sleep(1000);
             }
 
-            // Ekrandaki mesajı temizleyin.
             Console.Clear();
         }
 
@@ -598,8 +578,7 @@ namespace ApartmanTakipSistemi
                     {
                         string[] veri = satir.Split(',');
 
-                        // Veri dizisinin boyutunu kontrol edelim
-                        if (veri.Length >= 5) // Örneğin, en az 5 elemanı olması gerekiyorsa
+                        if (veri.Length >= 5)
                         {
                             ApartmanSakini sakin = new ApartmanSakini
                             {
@@ -612,7 +591,6 @@ namespace ApartmanTakipSistemi
                                 AidatOdendiMi = bool.Parse(veri[6])
                             };
 
-                            // Diğer sakin özelliklerini de ekleyebilirsiniz.
                             apartmanSakinleri.Add(sakin);
                         }
                         else
